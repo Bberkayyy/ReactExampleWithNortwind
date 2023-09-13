@@ -93,20 +93,21 @@ function AddOrUpdateProduct({
 }
 
 export function getProductById(products, productId) {
-  let product = products.find((product) => product.id == productId) || null;
-  return product;
+  let product = products.find((product) => product.id === productId);
+  return product !== undefined ? product : undefined;
 }
-function mapStateToProps(state) {
-  /*Sorunlu kod satırı => const productId = ownProps.match.params.productId*/
-  const productId = "1";
+function mapStateToProps(state, ownProps) {
+  const { productListReducer, categoryListReducer } = state;
+  const productId = ownProps;
   const product =
-    productId && state.productListReducer.length > 0
-      ? getProductById(state.productListReducer, productId)
+    (productId && productListReducer.length) > 0
+      ? getProductById(productListReducer, productId)
       : {};
+  console.log(product);
   return {
     product,
-    products: state.productListReducer,
-    categories: state.categoryListReducer,
+    products: productListReducer,
+    categories: categoryListReducer,
   };
 }
 const mapDispatchToProps = {
